@@ -1,0 +1,8 @@
+{
+  "name": "django-front-end",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/EricHech/django-front-end.git",
+  "author": "Eric <erichech@gmail.com>",
+  "license": "MIT"
+}
