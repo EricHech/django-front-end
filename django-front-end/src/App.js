@@ -16,7 +16,7 @@ class App extends Component {
       return <div>Error</div>;
     }
 
-    const notesToRender = this.props.data.feed.notes;
+    const notesToRender = this.props.data.notes;
 
     // REST
     // const test = fetch('http://127.0.0.1:8000/api/notes')
@@ -31,11 +31,11 @@ class App extends Component {
 
     return (
       <div>
-        {notesToRender.map((note) => {
+        {notesToRender.map((note, i) => {
           return (
-            <div>
-              <div>{note}</div>
-              <div>{note.id}</div>
+            <div key={i}>
+              <div>{note.title}</div>
+              <div>{note.content}</div>
             </div>
           );
         })}
@@ -46,12 +46,10 @@ class App extends Component {
 
 // JavaScript constant that stores the query
 const FEED_QUERY = gql`
-  query FeedQuery {
-    feed {
-      notes {
-        id
-        createdAt
-      }
+  query {
+    notes {
+      title
+      content
     }
   }
 `;
