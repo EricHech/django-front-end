@@ -4,30 +4,57 @@ import './App.css';
 // Imports for GraphQL
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import axios from 'axios';
+
+const API_ROOT = 'http://127.0.0.1:3490';
+const AUTH_ENDPOINT = '/api-token-auth/';
+const NOTE_ENDPOINT = '/api/notes/';
 
 class App extends Component {
+  state = {
+    notes: [],
+  };
+
+  componentDidMount() {
+    axios
+      .post(`${API_ROOT}${AUTH_ENDPOINT}`, {
+        username: 'admin',
+        password: 'iamblichus',
+      })
+      .then((res) => {
+        const token = res.data.token;
+        axios
+          .get(`${API_ROOT}${NOTE_ENDPOINT}`, {
+            headers: {
+              Authorization: `Token ${token}`,
+            },
+          })
+          .then((res) => {
+            this.setState({ notes: res.data });
+          })
+          .catch((err) => {
+            console.log('AXIOS.GET error: ', err);
+          });
+      })
+      .catch((err) => console.log('AXIOS.POST error: ', err));
+  }
+
   render() {
-    if (this.props.data && this.props.data.loading) {
-      return <div>Loading</div>;
-    }
+    //   if (this.props.data && this.props.data.loading) {
+    //     return <div>Loading</div>;
+    //   }
 
-    if (this.props.data && this.props.data.error) {
-      console.log(this.props.data.error);
-      return <div>Error</div>;
-    }
+    //   if (this.props.data && this.props.data.error) {
+    //     console.log(this.props.data.error);
+    //     return <div>Error</div>;
+    //   }
 
-    const notesToRender = this.props.data.notes;
+    //   const notesToRender = this.props.data.notes;
 
+    //
+    //
     // REST
-    // const test = fetch('http://127.0.0.1:8000/api/notes')
-    //   .then(res => res.json())
-    //   .then((res) => {
-    //     console.log('res: ');
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    const notesToRender = this.state.notes;
 
     return (
       <div>
